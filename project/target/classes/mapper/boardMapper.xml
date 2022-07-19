@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.boardMapper">
+
+	<insert id="insert" parameterType="Board">
+		insert into board(title,file_name,save_path,reg_date)
+		 values(#{title},#{file_name},#{save_path},sysdate())
+	</insert>
+
+	<select id="selectOne" parameterType="int" resultType="Board">
+		select * from board where board_id=#{board_id}
+	</select>
+
+	<select id="getList" resultType="Board">
+		select * from board
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from board where board_id=#{board_id}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+ 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+	<th:block th:fragment="headerFragment">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/header.css}" />
+		<th:block layout:fragment="header_css" />
+
+		<div id="header">
+			<h1>Carrot-i Homepage</h1>
+		</div>
+	</th:block>
+	
+</html>
+
+

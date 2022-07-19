@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>게시판</title>
+	<style>
+		#input-box{
+			width: 40%;
+			height: 200px;
+			position: relative;
+			left: 30%;
+			margin-top: 70px;
+			background-color: #98FB98;
+			min-width: 600px;
+			max-width: 800px;
+			border-radius: 10px;
+			box-shadow: 5px 5px 30px 5px gray;
+		}
+		.btn-box{
+			position: relative;
+			left: 10%;
+			padding: 10px 0px;
+		}
+		.btn-box span{
+			font-size: 30px;
+		}
+		.btn-box input[type="submit"]{
+			width: 100px;
+			height: 40px;
+			font-size: 1.1em;
+			font-weight: bold;
+			color: white;
+			border: 0px;
+			border-radius: 10px;
+		}
+		#cancel-btn{
+			margin-left: 30px;
+			background-color: black;
+		}
+		#submit-btn{
+			margin-left: 10px;
+			background-color: #1478FF;
+			right: 0%;
+		}
+			
+		
+		#title{
+			width: 80%;
+			height: 40px;
+			position: relative;
+			left: 10%;
+			margin-top: 10px;
+			color: gray;
+			font-size: 1.1em;
+			border: 0px;
+		}
+		
+		
+		.file-box{
+			position: relative;
+			width: 80%;
+			left: 10%;
+			margin-top:10px;
+		}
+		.file-box .upload-name{
+			height: 40px;
+			border: 1px solid #dddddd;
+			width: 70%;
+			color: gray;
+			font-size: 1.1em;
+		}
+		.file-box label{
+			cursor: pointer;
+			border: 1px solid black;
+			height: 40px;
+			background-color: #c8c8c8;
+			padding: 10px 20px;
+		}
+		.file-box input[type="file"]{
+			display: none;
+		}
+	</style>
+	
+	<script>
+		window.onload = function(){
+		
+			document.getElementById("cancel-btn").onclick = function(){
+				document.getElementById("frm").action="/list";
+			}
+
+			document.getElementById("submit-btn").onclick = function(){
+				var len = document.getElementById("title").value.length;
+				if(len>15){
+					alert("제목은 15자 이하로 설정하시기 바랍니다.");
+					return false;
+				}
+				
+				var fn = document.getElementById("mfile").value;
+				var fx = fn.substr(fn.length-4,4).toLowerCase();
+				if(!(fx=='.png'||fx=='.jpg')){
+					alert("png, jpg 파일로 첨부해주세요.");
+					return false;
+				}
+				
+				var size = document.getElementById("mfile").files[0].size;
+				if(size > 5*1024*1024){
+					alert("5MB이하의 파일로 첨부해주세요.");
+					return false;
+				}
+				
+				var fileNameLen = document.getElementById("mfile").files[0].name.length;
+				if(fileNameLen > 100){
+					alert("파일명이 너무 깁니다. 100자 이하로 첨부해주세요.");
+					return false;
+				}
+				
+				return true;
+			}
+			
+		}
+		
+		function showFileName(x){
+			console.log(x.parentNode.childNodes);
+			x.parentNode.childNodes[1].value = x.value;
+		}
+	</script>
+	
+</head>
+
+<body>
+
+	<th:block th:replace="~{/fragments/header :: headerFragment}"></th:block>
+
+	
+	<div id="input-box">
+		<form th:action="@{/upload}" method="post" enctype="multipart/form-data" accept-charset="utf-8" id="frm">
+			<div class="btn-box">
+				<span>글쓰기</span>
+				<input type="submit" value="취소" id="cancel-btn">
+				<input type="submit" value="저장" id="submit-btn">
+			</div>
+			<input type="text" name="title" id="title" placeholder="제목을 입력하세요."><br>
+			<div class="file-box">
+				<input class="upload-name"  value="" placeholder="선택된 파일 없음" readonly>
+				<label for="mfile">찾아보기...</label>
+				<input type="file" name="mfile" id="mfile" accept=".jpg, .png" value="찾아보기" onchange="showFileName(this)">
+			</div>
+		</form>
+	</div>
+	
+</body>
+</html>
